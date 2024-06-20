@@ -1,0 +1,64 @@
+#include <iostream> 
+#include <vector> 
+#include <algorithm> 
+#include <cmath> 
+#include <string>
+#include <map> 
+#include <set> 
+#include <queue>  
+#include <stack>  
+#include <cstdio>
+#include <cstdlib>  
+#include <climits> 
+#include <cstring>
+#include <bitset>
+#include <unordered_map>
+#include <unordered_set>
+#define ll long long
+#define endl "\n"
+using namespace std;
+
+ll n;
+ll arr[510];
+vector<ll> current_combination;
+vector<vector<ll> > all_combinations;
+
+void used(ll k, ll i) {
+    if (k == 0) {
+        all_combinations.push_back(current_combination);
+        return;
+    }
+    if (k < 0 || i > n) {
+        return;
+    }
+    // Option 1: Include arr[i] in the current combination
+    current_combination.push_back(arr[i]);
+    used(k - arr[i], i + 1);
+    current_combination.pop_back();
+
+    // Option 2: Exclude arr[i] from the current combination
+    used(k, i + 1);
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    ll k;
+    cin >> n >> k;
+    for (ll i = 1; i <= n; i++)
+        cin >> arr[i];
+
+    used(k, 1);
+
+    // Output the number of ways
+    cout << all_combinations.size() << endl;
+
+    // Output all combinations
+    for (auto &combination : all_combinations) {
+        for (ll num : combination)
+            cout << num << " ";
+        cout << endl;
+    }
+
+    return 0;
+}
